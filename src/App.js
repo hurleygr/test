@@ -1,5 +1,5 @@
-import './App.css';
-import Redirect from './components/Redirect.js'
+
+const Redirect = require('./components/Redirect.js');
 
 function App() {
   return (

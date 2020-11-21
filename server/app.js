@@ -1,14 +1,14 @@
 // var createError = require('http-errors');
 var express = require('express');
 var mysql = require('./dbcon.js');
-
+var http = require('http');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var app = express();
-
+var server = http.createServer(app);
 //app.set('port', 5000);
 
 app.use(logger('dev'));
@@ -56,8 +56,8 @@ app.get('/drop',function(req,res,next){
 });
 
 
-app.listen(app.get('port'), function(){
-  console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
+server.listen(1135, function(){
+  console.log('Express started on http://localhost:' + server.address().port + '; press Ctrl-C to terminate.');
 });
 
 

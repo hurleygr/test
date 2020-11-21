@@ -8,7 +8,7 @@ import CreateGroup from '../pages/CreateGroup';
 import Link from '../pages/Link';
 
 
-const Redirect = () => {
+function Redirect() {
   return (
     <Switch> {/* The Switch decides which component to show based on the current URL.*/}
       <Route exact path='/' component={Link}></Route>
