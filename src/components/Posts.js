@@ -13,6 +13,9 @@ class Posts extends React.Component {
     }
 
     createPost(arr) {
+        fetch('http://localhost:5001/posts')
+        .then(response => response.json())
+        .then(json => console.log(json));
         // add INSERT
         const new_state = this.state;
         new_state.titles.unshift(arr[0])
