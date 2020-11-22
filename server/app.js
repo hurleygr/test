@@ -28,6 +28,43 @@ app.get('/posts',function(req,res,next){
 		res.send(rows);
 		});
 	});
+
+app.get('/comments', function(req, res, next){
+  var post_id = req.body.id;
+  mysql.pool.query("SELECT * FROM Comments WHERE post_id = ?", [post_id])
+})
+
+app.post('/posts', function(req, res, next){
+    var title = req.body.title;
+    var content = req.body.content;
+    var create_date = req.body.create_date;
+    var group_id = req.body.group_id; // need select, what if no group? what if group not created but field is filled?
+    var user_id = req.body.user_id; // what if no one logged in? default to anonymous? but then there is no id. 
+    mysql.pool.query("INSERT INTO Posts (`title`, `content`, `create_date`, `group_id`, `user_id`) VALUES ('" + title + "', '" + content + "', '" + create_date +"', , '" + group_id +"', , '" + user_id +"'")
+  })
+
+app.post('/register', function(req, res, next){
+  var user = req.body.user;
+  var password = req.body.password;
+  var email = req.body.email;
+  mysql.pool.query("INSERT INTO Users (`user_name`, `password`, `email`) VALUES ('" + user + "', '" + password + "', '" + email +"'")
+})
+
+app.post('/comments', function(req, res, next){
+  var content = req.body.content;
+  var create_date = req.body.create_date;
+  var post_id = req.body.post_id; 
+  var user_id = req.body.user_id; 
+  mysql.pool.query("INSERT INTO Comments (`user_id`, `post_id`, `content`, `create_date`) VALUES ('" + user_id+ "', '" + post_id + "',  '" + content +"', '" + create_date +"'")
+})
+
+app.get('/author', function(req, res, next) {
+  var id = req.body.id;
+  mysql.pool.query("SELECT username FROM Users WHERE user_id = ?", [id])
+})
+
+
+
 app.get('/drop',function(req,res,next){
   console.log("Dropping")
 

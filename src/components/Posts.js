@@ -6,17 +6,37 @@ class Posts extends React.Component {
     constructor(props) {
         super(props);
         //add SELECT
-        this.state = {titles: ["Foo", "Bar", "Sample", "Data"], authors: ["Griffin Hurley", "Sang Ok Suh", "John Smith", "Alexander Hamilton"], contents: ["Once upon a time", 'We made an app and stuff', "And this is it", "So...enjoy"], create_dates: ["2020-07-12", "2020-07-13", "2020-07-13", "2020-07-13"], groups: ["stuff", "stuff", "stuff", "stuff"]};
+        this.state = {data:[]};
         this.createPost = this.createPost.bind(this);
         this.editPost = this.editPost.bind(this);
         this.deletePost = this.deletePost.bind(this);
     }
+	componentDidMount() {
+          fetch('http://flip3.engr.oregonstate.edu:1135/posts')
+          .then(response => response.json())
+          .then(json => this.setState({data: json}));
+	  //console.log(this.state);        
+//.then(json => this.setState(json))
+        }
 
     createPost(arr) {
-        fetch('http://localhost:5001/posts')
-        .then(response => response.json())
-        .then(json => console.log(json));
-        // add INSERT
+ 	fetch('http://flip3.engr.oregonstate.edu:1135/posts', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: arr[0],
+              content: arr[1],
+              create_date: arr[3],
+              author: arr[2],
+              group: arr[4]
+            })
+          })
+          .then(res => res.json())
+          .then(data => console.log(data))
+          .catch(err => console.log(err));      
         const new_state = this.state;
         new_state.titles.unshift(arr[0])
         new_state.authors.unshift(arr[1])
@@ -46,20 +66,19 @@ render() {
     return (
         <div style = {{margin:"40px"}}>
             <WritePost update = {this.createPost} username = {this.props.username}/>
-
-            {this.state.authors.map((authors, authorIndex) => {
+	    {this.state.data.length ? this.state.data.map((state, idx) => {
                 return (<Post
-                title = {this.state.titles[authorIndex]}
-                author={authors} 
-                content={this.state.contents[authorIndex]} 
-                create_date = {this.state.create_dates[authorIndex]}
-                group = {this.state.groups[authorIndex]}
-                id = {authorIndex}
+                title = {state.title}
+                author={state.author} 
+                content={state.content} 
+                create_date = {state.create_date}
+                group = {state.group}
+                id = {idx}
                 editfunc = {this.editPost}
                 deletefunc = {this.deletePost}
                 />
                 )
-            })}
+            }): null }
         </div> 
 );
 } }
