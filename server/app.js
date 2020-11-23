@@ -36,7 +36,7 @@ app.get('/allcomments', function(req, res, next){
 
 app.get('/comments', function(req, res, next){
   console.log(req);
-  var post_id = req.params.id;
+  var post_id = req.query.id;
   mysql.pool.query("SELECT * FROM Comments WHERE Comments.post_id=?",[post_id], function(err, rows, fields){
     res.send(rows);
     })
@@ -83,6 +83,9 @@ app.post('/comments', function(req, res, next){
   var user_id = req.body.user_id; 
   var post = {user_id:user_id, post_id:post_id, content:content, create_date:create_date}
   mysql.pool.query('INSERT INTO Comments SET ?', post, function(err, rows, fields){
+        console.log(err)
+        console.log(fields)
+        console.log(rows)
 	res.send(rows)
 })
 });
@@ -107,33 +110,6 @@ app.get('/groupid', function(req, res, next) {
   mysql.pool.query("SELECT group_id FROM Groups WHERE group_name = ?", [name], function(err, rows, fields){
     res.send(rows)
 })
-});
-
-app.get('/drop',function(req,res,next){
-  console.log("Dropping")
-
-  var createString = "CREATE TABLE diagnostic(" +
-  "id INT PRIMARY KEY AUTO_INCREMENT," +
-  "text VARCHAR(255) NOT NULL)";
-  mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-    if(err){
-      console.log(err)
-      next(err);
-      return;
-    }
-    mysql.pool.query(createString, function(err){
-      if(err){
-        console.log(err)
-        next(err);
-		return;
-      }
-	  mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-	    mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
-		  res.json(JSON.stringify(rows));
-		});
-	  });
-    });
-  });
 });
 
 
