@@ -21,7 +21,7 @@ class SpecificPost extends React.Component {
             <p>{this.props.location.state.content}</p>
             <p>{this.props.location.state.create_date}</p>
             <Buttons title={this.props.location.state.title} content={this.props.location.state.content} group={this.props.location.state.group} id={this.props.location.state.id} />
-            <Comments post_id={this.props.post_id} />
+            <Comments post_id={this.props.location.state.post_id} />
         </div> 
     );
 }};
