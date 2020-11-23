@@ -7,34 +7,58 @@ class Comments extends React.Component {
     constructor(props) {
         super(props);
         //add SELECT
-        this.state = {authors: ["Griffin Hurley", "Sang Ok Suh", "John Smith", "Alexander Hamilton"], contents: ["These are comments", 'More Comments', "Commentey goodness", "Being Original is hard"], create_dates: ["2020-07-12", "2020-07-13", "2020-07-13", "2020-07-13"]};
+        this.state = {data: []};
         this.createComment = this.createComment.bind(this);
         this.editComment = this.editComment.bind(this);
         this.deleteComment= this.deleteComment.bind(this);
-    }
+        this.id_from_user = this.id_from_user.bind(this);
 
+    }
+    componentDidMount() {
+        fetch('http://flip3.engr.oregonstate.edu:1135/comments?id=', this.props.post_id)
+        .then(response => response.json())
+        .then(json => this.setState({data: json}));
+      };
+
+    id_from_user(user){
+        return fetch('http://flip3.engr.oregonstate.edu:1135/userid?username=' + user )
+        .then((response) => response.json())
+        .catch((err) => console.log(err))
+  };
     createComment(arr) {
-        // add INSERT
-        const new_state = this.state;
-        new_state.authors.unshift(arr[0])
-        new_state.contents.unshift(arr[1])
-        new_state.create_dates.unshift(arr[2])
-        this.setState(new_state)
+        this.id_from_user(this.props.username)
+        .then(u => 
+        fetch('http://flip3.engr.oregonstate.edu:1135/comments', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+	          'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              create_date: new Date(),
+              content: arr[0],
+              user_id: u.length ? u[0].user_id : 4, //arr[2],
+              post_id: this.props.post_id //arr[3]
+            })
+          })
+          .then(response => response.json())
+	      .then(data => console.log(data))
+          .catch(err => console.log(err))
+        
+)
+       // new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
+        .then(() => this.setState(new_state))
     };
 
     editComment(arr, idx) {
-        const new_state = this.state;
-        new_state.contents[idx] = arr[0];
-        new_state.create_dates[idx] = arr[1];
-        this.setState(new_state)
+        return
     };
 
     deleteComment(idx) {
-        const new_state = this.state;
-        for (var key in new_state) {
-            new_state[key].splice(idx, 1)
-        };
-        this.setState(new_state)
+        return
+        
     };
 
 render() {
@@ -42,18 +66,19 @@ render() {
         <div style = {{margin:"40px"}}>
             <WriteComment update = {this.createComment} username = {this.props.username}/>
 
-            {this.state.authors.map((authors, authorIndex) => {
+            {this.state.data.length ? this.state.data.map((state, idx) => {
                 return (<Comment
-                author={authors} 
-                content={this.state.contents[authorIndex]} 
-                create_date = {this.state.create_dates[authorIndex]}
-                id = {authorIndex}
-                editfunc = {this.editComment}
-                deletefunc = {this.deleteComment}
+                author={state.author} 
+                content={state.content} 
+                create_date = {state.create_date}
+                idx = {idx}
+	            id = {state.post_id}
+                editfunc = {this.editPost}
+                deletefunc = {this.deletePost}
                 />
                 )
-            })}
+            }): null }
         </div> 
-);
-} }
+    );
+}}
 export default Comments;
