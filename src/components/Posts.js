@@ -38,10 +38,12 @@ class Posts extends React.Component {
     createPost(arr) {
         const new_state = this.state;
         const post_id = null;
-	const user_id = null;
-	const group_id = null;
-	this.getGroupAndUser(arr[2], arr[3])
-	  .then(([u, g]) => //console.log(u, g, arr[2], arr[3]))//{group_id = group_id, user_id = user_id}
+	    const user_id = null;
+	    const group_id = null;
+	    this.getGroupAndUser(arr[2], arr[3])
+        .then(([u, g]) => 
+        {group_id = g, user_id = u})
+        .then(something => 
 	
 
 
@@ -56,16 +58,16 @@ class Posts extends React.Component {
             body: JSON.stringify({
               title: arr[0],
               content: arr[1],
-              user_id: u.length ? u[0].user_id : 4, //arr[2],
-              group_id: g.length ? g[0].group_id : null //arr[3]
+              user_id: user_id.length ? user_id[0].user_id : 4, //arr[2],
+              group_id: group_id.length ? group_id[0].group_id : null //arr[3]
             })
           })
           .then(response => response.json())
-	  .then(data => console.log(data))
+	      .then(data => post_id = data.insertId)
           .catch(err => console.log(err))
         
 )
-       // new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
+         new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
         .then(() => this.setState(new_state))
     };
 
