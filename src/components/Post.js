@@ -17,8 +17,8 @@ render() {
             <h1>{this.props.title}</h1>
 
             <h5>{"Posted By: " + this.props.author}</h5>
-            {this.props.group ?
-            <h6>{"Posted In: " + this.props.group}</h6>
+            {this.props.group_name ?
+            <h6>{"Posted In: " + this.props.group_name}</h6>
             : null}
             <p>{this.props.content}</p>
             <p>{this.props.create_date}</p>

@@ -3,7 +3,7 @@ import React from 'react';
 class WritePost extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {title: "", contents: "", group: "", showPost: false}
+        this.state = {title: "", content: "", group: "", showPost: false}
         this.update_posts = this.update_posts.bind(this);
     };
     show_post_input () {
@@ -19,7 +19,7 @@ class WritePost extends React.Component {
     };
 
     content_change (e) {
-        this.setState({contents: e.target.value})
+        this.setState({content: e.target.value})
     };
 
     group_change (e) {
@@ -28,32 +28,15 @@ class WritePost extends React.Component {
    
 
     update_posts (e) {
-        e.preventDefault();
-
         const arr = [];
-        arr.push(this.state.title);
+	arr.push(this.state.title);
+        arr.push(this.state.content);
         arr.push(this.props.username ? this.props.username : "Anonymous");
-        arr.push(this.state.contents);
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; 
-        var yyyy = today.getFullYear();
-        if(dd<10) 
-        {
-            dd='0'+dd;
-        } 
-        
-        if(mm<10) 
-        {
-            mm='0'+mm;
-        } 
-        today = mm+'-'+dd+'-'+yyyy;
-        arr.push(today);
+        arr.push(this.state.group)
         this.props.update(arr);
-        console.log(this.state)
+        //console.log(this.state)
         this.hide_post_input();
-    };
-
+         };
     
     render() {
         return (
@@ -72,7 +55,7 @@ class WritePost extends React.Component {
                 <label style = {{marginLeft: "10px"}}>
                     <input type="text" placeholder="Optional: Enter a Group" style = {{width: "400px"}} onChange ={this.group_change.bind(this)}/>
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="button" value="Submit" onClick = {this.update_posts} />
             </form>
             : null }
             </div>
