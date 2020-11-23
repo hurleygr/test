@@ -49,7 +49,7 @@ class Comments extends React.Component {
         
 )
        // new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
-        .then(() => this.setState(new_state))
+//        .then(() => this.setState(new_state))
     };
 
     editComment(arr, idx) {

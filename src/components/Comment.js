@@ -61,7 +61,7 @@ render() {
                 <label style = {{marginLeft: "10px"}}>
                     <input type="text" placeholder="Enter Comments" defaultValue = {this.props.content} style = {{width: "400px"}} onChange ={this.content_change.bind(this)}/>
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="button" onClick={this.update_comments} value="Submit" />
 
                 </form>
                 : null }
