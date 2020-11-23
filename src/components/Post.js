@@ -12,7 +12,7 @@ class Post extends React.Component {
 render() {
     return (
         <div style = {{border: '2px solid', margin: '8px', marginRight: '30%'}}>
-            <Link style = {{color: "black", textDecoration: "none"}} to={{pathname:'/specificpost', state: {title:this.props.title, content:this.props.content, group:this.props.group, id:this.props.id}}} >
+            <Link style = {{color: "black", textDecoration: "none"}} to={{pathname:'/specificpost', state: {title:this.props.title, content:this.props.content, group_name:this.props.group_name, post_id:this.props.post_id}}} >
 
             <h1>{this.props.title}</h1>
 
@@ -23,7 +23,7 @@ render() {
             <p>{this.props.content}</p>
             <p>{this.props.create_date}</p>
             </Link>
-            <Buttons title={this.props.title} content={this.props.content} group={this.props.group} id={this.props.id} editfunc={this.props.editfunc} deletefunc={this.props.deletefunc}/>
+            <Buttons title={this.props.title} content={this.props.content} group={this.props.group} post_id={this.props.post_id} idx={this.props.idx} editfunc={this.props.editfunc} deletefunc={this.props.deletefunc}/>
         </div> 
     );
 } }
