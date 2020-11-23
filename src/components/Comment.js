@@ -22,19 +22,7 @@ class Comment extends React.Component {
             const arr = [];
             arr.push(this.state.content);
             var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth()+1; 
-            var yyyy = today.getFullYear();
-            if(dd<10) 
-            {
-                dd='0'+dd;
-            } 
-            
-            if(mm<10) 
-            {
-                mm='0'+mm;
-            } 
-            today = mm+'-'+dd+'-'+yyyy;
+           
             arr.push(today);
         this.props.editfunc(arr, this.props.id)
         this.toggle_edit();
@@ -61,7 +49,7 @@ render() {
                 <label style = {{marginLeft: "10px"}}>
                     <input type="text" placeholder="Enter Comments" defaultValue = {this.props.content} style = {{width: "400px"}} onChange ={this.content_change.bind(this)}/>
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="button" onClick={this.update_comments} value="Submit" />
 
                 </form>
                 : null }
