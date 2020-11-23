@@ -56,8 +56,8 @@ class Posts extends React.Component {
             body: JSON.stringify({
               title: arr[0],
               content: arr[1],
-              author: u.length ? u[0].user_id : 4, //arr[2],
-              group: g.length ? g[0].group_id : null //arr[3]
+              user_id: u.length ? u[0].user_id : 4, //arr[2],
+              group_id: g.length ? g[0].group_id : null //arr[3]
             })
           })
           .then(response => response.json())
