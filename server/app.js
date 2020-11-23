@@ -77,11 +77,11 @@ res.send(rows)
 });
 
 app.post('/comments', function(req, res, next){
-  var content = req.params.content;
+  var content = req.body.content;
   var create_date = new Date();
-  var post_id = req.params.post_id; 
-  var user_id = req.params.user_id; 
-  var post = {user_id:user_id, post_id:post_d, content:content, create_date:create_date}
+  var post_id = req.body.post_id; 
+  var user_id = req.body.user_id; 
+  var post = {user_id:user_id, post_id:post_id, content:content, create_date:create_date}
   mysql.pool.query('INSERT INTO Comments SET ?', post, function(err, rows, fields){
 	res.send(rows)
 })
