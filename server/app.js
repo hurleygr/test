@@ -5,7 +5,7 @@ var http = require('http');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var app = express();
 var server = http.createServer(app);
@@ -20,7 +20,7 @@ const cors = require('cors')
 
 app.use(cors())
 app.use('/', indexRouter);
-
+app.use(bodyParser.json());
 app.get('/posts',function(req,res,next){
   //console.log("Posts")
 	mysql.pool.query('SELECT * FROM Posts LEFT JOIN Groups ON Posts.group_id=Groups.group_id LEFT JOIN Users ON Users.user_id=Posts.user_id', function(err, rows, fields){
@@ -43,6 +43,7 @@ app.get('/comments', function(req, res, next){
 });
 app.post('/posts', function(req, res, next){
     var title = req.body.title;
+    console.log("req: ", req.body);
     var content = req.body.content;
     var create_date = req.body.create_date;
     var group_id = req.body.group_id; // need select, what if no group? what if group not created but field is filled?

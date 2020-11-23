@@ -6,7 +6,7 @@ import Header from '../components/Header';
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {user: null};
+    this.state = {user: "Anonymous"};
   };
 
   logIn (username) {

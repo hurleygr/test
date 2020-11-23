@@ -21,13 +21,13 @@ class Posts extends React.Component {
         };
     
     id_from_user(user){
-          return fetch('http://flip3.engr.oregonstate.edu:1135/userid?=' + user )
+          return fetch('http://flip3.engr.oregonstate.edu:1135/userid?username=' + user )
 	  .then((response) => response.json())
 	  .catch((err) => console.log(err))
     };
 
     id_from_group(group){
-        return fetch('http://flip3.engr.oregonstate.edu:1135/groupid?=' + group)
+        return fetch('http://flip3.engr.oregonstate.edu:1135/groupid?groupname=' + group)
         .then((response) => response.json())
 	.catch((err) => console.log(err))
     };
@@ -41,8 +41,7 @@ class Posts extends React.Component {
 	const user_id = null;
 	const group_id = null;
 	this.getGroupAndUser(arr[2], arr[3])
-	  .then(([u, g]) => console.log(u, g))//{group_id = group_id, user_id = user_id}
-	  .catch((err) => console.log(err))
+	  .then(([u, g]) => //console.log(u, g, arr[2], arr[3]))//{group_id = group_id, user_id = user_id}
 	
 
 
@@ -50,22 +49,24 @@ class Posts extends React.Component {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+	      'Access-Control-Allow-Origin' : '*',
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               title: arr[0],
               content: arr[1],
-              author: user_id, //arr[2],
-              group: group_id //arr[3]
+              author: u.length ? u[0].user_id : 4, //arr[2],
+              group: g.length ? g[0].group_id : null //arr[3]
             })
           })
-          .then(res => res.json())
-          .then(data => console.log(data))
-          .catch(err => console.log(err));
+          .then(response => response.json())
+	  .then(data => console.log(data))
+          .catch(err => console.log(err))
         
-
-        new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
-        this.setState(new_state)
+)
+       // new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
+        .then(() => this.setState(new_state))
     };
 
     editPost(arr, idx) {
