@@ -15,20 +15,20 @@ class Comments extends React.Component {
 
     }
     componentDidMount() {
-        fetch('http://flip3.engr.oregonstate.edu:1135/comments?id=', this.props.post_id)
+        fetch('http://flip2.engr.oregonstate.edu:1135/comments?id=' + this.props.post_id)
         .then(response => response.json())
         .then(json => this.setState({data: json}));
       };
 
     id_from_user(user){
-        return fetch('http://flip3.engr.oregonstate.edu:1135/userid?username=' + user )
+        return fetch('http://flip2.engr.oregonstate.edu:1135/userid?username=' + user )
         .then((response) => response.json())
         .catch((err) => console.log(err))
   };
-    createComment(arr) {
-        this.id_from_user(this.props.username)
-        .then(u => 
-        fetch('http://flip3.engr.oregonstate.edu:1135/comments', {
+    async createComment(arr) {
+        const u = await this.id_from_user(this.props.username)
+        const new_state = this.state;
+        fetch('http://flip2.engr.oregonstate.edu:1135/comments', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -47,9 +47,9 @@ class Comments extends React.Component {
 	      .then(data => console.log(data))
           .catch(err => console.log(err))
         
-)
-       // new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
-//        .then(() => this.setState(new_state))
+
+         new_state.data.push({post_id:this.props.post_id, content: arr[0], author: u, create_date: new Date() })
+         this.setState(new_state)
     };
 
     editComment(arr, idx) {
@@ -72,7 +72,7 @@ render() {
                 content={state.content} 
                 create_date = {state.create_date}
                 idx = {idx}
-	            id = {state.post_id}
+	        post_id = {state.post_id}
                 editfunc = {this.editPost}
                 deletefunc = {this.deletePost}
                 />

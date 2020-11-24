@@ -37,10 +37,10 @@ render() {
             <h7>{"Posted On: " + this.props.create_date}</h7>
 
             <p>{this.props.content}</p>
-            <button onClick={this.toggle_edit.bind(this)}>
+            <button >
                 Edit
             </button>
-            <button onClick={this.props.deletefunc.bind(this)}>
+            <button>
                 Delete
             </button>
             {this.state.showEdit ?

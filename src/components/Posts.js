@@ -15,19 +15,19 @@ class Posts extends React.Component {
         this.deletePost = this.deletePost.bind(this);
     }
 	componentDidMount() {
-          fetch('http://flip3.engr.oregonstate.edu:1135/posts')
+          fetch('http://flip2.engr.oregonstate.edu:1135/posts')
           .then(response => response.json())
           .then(json => this.setState({data: json}));
         };
     
     id_from_user(user){
-          return fetch('http://flip3.engr.oregonstate.edu:1135/userid?username=' + user )
+          return fetch('http://flip2.engr.oregonstate.edu:1135/userid?username=' + user )
 	  .then((response) => response.json())
 	  .catch((err) => console.log(err))
     };
 
     id_from_group(group){
-        return fetch('http://flip3.engr.oregonstate.edu:1135/groupid?groupname=' + group)
+        return fetch('http://flip2.engr.oregonstate.edu:1135/groupid?groupname=' + group)
         .then((response) => response.json())
 	.catch((err) => console.log(err))
     };
@@ -43,7 +43,7 @@ class Posts extends React.Component {
 	
 
 
-        fetch('http://flip3.engr.oregonstate.edu:1135/posts', {
+        fetch('http://flip2.engr.oregonstate.edu:1135/posts', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
