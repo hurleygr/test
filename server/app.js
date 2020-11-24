@@ -67,11 +67,15 @@ app.post('/posts', function(req, res, next){
   });
 
 app.post('/register', function(req, res, next){
+  console.log(req.body)
   var user = req.body.user;
   var password = req.body.password;
   var email = req.body.email;
   var post = {user_name: user, password: password, email: email}
   mysql.pool.query('INSERT INTO Users SET ?',post, function(err, rows, fields){
+console.log(err)
+console.log(fields)
+console.log(rows)
 res.send(rows)
 })
 });

@@ -90,7 +90,7 @@ render() {
 	    {this.state.data.length ? this.state.data.map((state, idx) => {
                 return (<Post
                 title = {state.title}
-                author={state.author} 
+                author={state.user_name} 
                 content={state.content} 
                 create_date = {state.create_date}
                 group_id = {state.group_id}

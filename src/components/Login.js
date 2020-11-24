@@ -6,12 +6,18 @@ class Login extends React.Component {
         this.state = {showLogin: false, showRegister: false, login: {username: null, password: null}, registration: {email: null, username: null, password: null}};
 
     }
-    show_login() {
-        this.setState({showLogin: true})
+   
+    username_change (e) {
+        
+        this.setState({registration: {...this.state.registration, username: e.target.value}})
     };
 
-    close_login() {
-        this.setState({showLogin: false})
+    password_change (e) {
+        this.setState({registration: {...this.state.registration, password: e.target.value}})
+    };
+
+    email_change (e) {
+        this.setState({registration: {...this.state.registration, email: e.target.value}})
     };
     
     show_register() {
@@ -23,34 +29,46 @@ class Login extends React.Component {
     };
 
     registerFunction () {
-
+        const clear_registration = {email: null, username: null, password: null};
+        fetch('http://flip2.engr.oregonstate.edu:1135/register', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+	          'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user: this.state.registration.username,
+              password: this.state.registration.password,
+              email: this.state.registration.email
+            })
+          })
+          .then(response => console.log(response))
+	      
+          .catch(err => console.log(err))
+        this.props.func(this.state.registration.username)
+        this.setState({registration: clear_registration})
+        this.close_register();
     };
 
     logInFunction (e) {
         e.preventDefault();
         this.props.func(this.state.login.username);
-        console.log(this.state)
         this.close_login() ;
     }
 
-    username_change (e) {
-        
-        this.setState({login: {username: e.target.value, password: this.state.login.password}})
-    };
-
-    password_change (e) {
-        this.setState({login: {username: this.state.login.username, password: e.target.value}})
-    };
+    
+    
+    
 
 render() {
     return (
         <div>
-            <button onClick={this.show_login.bind(this)}>
-                 Log In
-            </button>
+            
 
             <button onClick={this.show_register.bind(this)}>
-                Register
+                Register/Log In
             </button>
 
         {this.state.showRegister ?
@@ -58,33 +76,21 @@ render() {
             <h2>Join:</h2>
             <label style = {{marginRight: "20px"}}>
                 Email:
-                <input type="text" name="email" />
+                <input type="text" name="email" onChange = {this.email_change.bind(this)} />
             </label>
             <label>
                 Username:
-                <input type="text" name="username" />
+                <input type="text" name="username" onChange = {this.username_change.bind(this)} />
             </label>
             <label>
                 Password:
-                <input type="text" name="password" />
+                <input type="text" name="password" onChange = {this.password_change.bind(this)} />
             </label>
-            <input type="submit" value="Submit"  />
+            <input type="button" onClick={this.registerFunction.bind(this)} value="Submit"  />
         </form>
         : null}
 
-        {this.state.showLogin ?
-        <form onSubmit = {this.logInFunction.bind(this)}>
-            <label style = {{marginRight: "20px"}}>
-            Username:
-            <input type="text" name="name" onChange = {this.username_change.bind(this)} />
-            </label>
-            <label>
-                Password:
-                <input type="text" name="password" onChange = {this.password_change.bind(this)}/>
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
-        : null }
+        
         </div>
     )
 }};
