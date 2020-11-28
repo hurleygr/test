@@ -57,7 +57,7 @@ class Buttons extends React.Component {
                     <input type="text" placeholder="Enter Post Body" defaultValue = {this.props.content} style = {{width: "400px"}} onChange ={this.content_change.bind(this)}/>
                 </label>
                 <label style = {{marginLeft: "10px"}}>
-                    <input type="text" placeholder="Optional: Enter a Group" defaultValue={this.props.group} style = {{width: "400px"}} onChange ={this.group_change.bind(this)}/>
+                    <input type="text" placeholder="Optional: Enter a Group" defaultValue={this.props.group_name} style = {{width: "400px"}} onChange ={this.group_change.bind(this)}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>
