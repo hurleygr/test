@@ -21,13 +21,16 @@ class Login extends React.Component {
     };
     
     show_register() {
-        this.setState({showRegister: true})
+        this.setState({showRegister: !(this.state.showRegister)})
     };
     
     close_register() {
         this.setState({showRegister: false})
     };
-
+    log_out() {
+	localStorage.clear()
+        this.props.func("Anonymous");
+	};
     registerFunction () {
         const clear_registration = {email: null, username: null, password: null};
         fetch('http://flip2.engr.oregonstate.edu:1135/register', {
@@ -47,8 +50,11 @@ class Login extends React.Component {
           .then(response => console.log(response))
 	      
           .catch(err => console.log(err))
+        localStorage.setItem("user", this.state.registration.username)
         this.props.func(this.state.registration.username)
-        this.setState({registration: clear_registration})
+
+	this.setState({registration: clear_registration})
+       
         this.close_register();
     };
 
@@ -70,7 +76,9 @@ render() {
             <button onClick={this.show_register.bind(this)}>
                 Register/Log In
             </button>
-
+	    <button onClick={this.log_out.bind(this)}>
+		Log Out
+	    </button>
         {this.state.showRegister ?
         <form onSubmit = {this.registerFunction.bind(this)}>
             <h2>Join:</h2>
