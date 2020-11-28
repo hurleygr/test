@@ -29,13 +29,13 @@ class Buttons extends React.Component {
 
     update_posts (e) {
         e.preventDefault();
-        const arr = [this.state.title, this.state.contents, this.state.group]
-        this.props.editfunc(arr, this.props.id);
+        const arr = [this.state.title, this.state.contents, this.state.group, this.props.post_id]
+        this.props.editfunc(arr, this.props.idx);
         this.hide_edit();
     };
 
     deletePost() {
-        this.props.deletefunc(this.props.id)
+        this.props.deletefunc(this.props.post_id)
         this.hide_edit();
     };
     

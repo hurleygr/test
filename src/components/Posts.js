@@ -66,20 +66,56 @@ class Posts extends React.Component {
         this.setState(new_state)
     };
 
-    editPost(arr, idx) {
-        const new_state = this.state;
-        new_state.titles[idx] = arr[0];
-        new_state.contents[idx] = arr[1];
-        new_state.groups[idx] = arr[2];
+    async editPost(arr, idx) {
+      const new_state = this.state;
+      const post_id = arr[3] ;
+      const group_id = await this.id_from_group(arr[2])
+
+
+
+
+        fetch('http://flip2.engr.oregonstate.edu:1135/posts', {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+              'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: arr[0],
+              content: arr[1],
+              group_id: group_id.length ? group_id[0].group_id : null, //arr[3]
+              post_id: post_id
+	    })
+          })
+          .then(response => response.json())
+          .catch(err => console.log(err))
+
+        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: arr[2], group_id: group_id}
         this.setState(new_state)
     };
 
-    deletePost(idx) {
-        const new_state = this.state;
-        for (var key in new_state) {
-            new_state[key].splice(idx, 1)
-        };
-        this.setState(new_state)
+    deletePost(id) {
+	fetch('http://flip2.engr.oregonstate.edu:1135/posts?id=' + id, {
+	    method: 'DELETE',
+	    headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+                  'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            }})
+	    .then(response => response.json())
+	    .catch(err => console.log(err))
+	var arr = this.state.data;
+	console.log(id, arr)
+        for (var i=0; i<arr.length; i++) {
+	    if (arr[i].post_id == id) {
+		arr.splice(i,1);
+		this.setState({data: arr})
+	        break;
+        }}
+        
     };
 
 render() {

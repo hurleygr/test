@@ -49,7 +49,7 @@ class Comments extends React.Component {
           .catch(err => console.log(err))
         
 
-         new_state.data.push({comment_id: comment_id, post_id:this.props.post_id, content: arr[0], author: u, create_date: new Date() })
+         new_state.data.push({comment_id: comment_id, post_id: this.props.post_id, content: arr[0], user_id: u, author: this.props.username, create_date: new Date() })
          this.setState(new_state)
     };
 
@@ -69,9 +69,11 @@ class Comments extends React.Component {
 	    .then(response => response.json())
 	    .catch(err => console.log(err))
 	var arr = this.state.data;
+        console.log(arr)
         for (var i=0; i<arr.length; i++) {
-	    if (arr.comment_id == id) {
+	    if (arr[i].comment_id == id) {
 		arr.splice(i,1);
+		console.log(arr)
 		this.setState({data: arr})
 	        break;
         }}
@@ -79,13 +81,14 @@ class Comments extends React.Component {
     };
 
 render() {
+    console.log(this.state.data)
     return (
         <div style = {{margin:"40px"}}>
             <WriteComment update = {this.createComment} username = {this.props.username}/>
 
             {this.state.data.length ? this.state.data.map((state, idx) => {
                 return (<Comment
-                author={state.author} 
+                author={state.user_name} 
                 content={state.content} 
                 create_date = {state.create_date}
                 comment_id  = {state.comment_id}

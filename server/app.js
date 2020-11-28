@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.get('/posts',function(req,res,next){
   //console.log("Posts")
 	mysql.pool.query('SELECT * FROM Posts LEFT JOIN Groups ON Posts.group_id=Groups.group_id LEFT JOIN Users ON Users.user_id=Posts.user_id', function(err, rows, fields){
-    		console.log(rows)
+  //  		console.log(rows)
 		res.send(rows);
 		});
 	});
@@ -37,8 +37,9 @@ app.get('/allcomments', function(req, res, next){
 app.get('/comments', function(req, res, next){
   console.log(req);
   var post_id = req.query.id;
-  mysql.pool.query("SELECT * FROM Comments WHERE Comments.post_id=?",[post_id], function(err, rows, fields){
-    res.send(rows);
+  mysql.pool.query("SELECT * FROM Comments LEFT JOIN Users ON Comments.user_id=Users.user_id  WHERE Comments.post_id=?",[post_id], function(err, rows, fields){
+  console.log(err)  
+  res.send(rows);
     })
 });
 app.post('/posts', function(req, res, next){
@@ -67,10 +68,23 @@ app.post('/posts', function(req, res, next){
   });
 app.delete('/posts', function(req, res, next){
   var post_id = req.query.id;
-  mysql.pool.query('DELETE FROM Posts WHERE Posts.post_id=?', [post_id], function(err, rows, fields){
+  mysql.pool.query('DELETE Posts, Comments FROM Posts INNER JOIN Comments ON Posts.post_id=Comments.post_id WHERE Posts.post_id=? AND Comments.post_id=?', [post_id, post_id], function(err, rows, fields){
+  console.log(err)
   res.send(rows);
   })
 });
+app.put('/posts', function(req, res, next) {
+   // var create_date = new Date()
+    var title = req.body.title;
+    var content = req.body.content;
+    var group_id = req.body.group_id;
+    //var user_id = req.body.user_id;
+    var post = {title: title, content: content, group_id: group_id}
+  mysql.pool.query('UPDATE Posts SET ? WHERE Posts.post_id = ?',[post, req.body.post_id], function(err, rows, fields) {
+  console.log(err)
+  res.send(rows)
+})});
+
 //delete comment with specific id
 app.delete('/comments', function(req, res, next){
   var comment_id = req.query.id;
