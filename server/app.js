@@ -65,7 +65,22 @@ app.post('/posts', function(req, res, next){
       res.send(rows)
 })
   });
-
+app.delete('/posts', function(req, res, next){
+  var post_id = req.query.id;
+  mysql.pool.query('DELETE FROM Posts WHERE Posts.post_id=?', [post_id], function(err, rows, fields){
+  res.send(rows);
+  })
+});
+//delete comment with specific id
+app.delete('/comments', function(req, res, next){
+  var comment_id = req.query.id;
+  mysql.pool.query('DELETE FROM Comments WHERE Comments.comment_id=?', [comment_id], function(err, rows, fields){
+  console.log(err);
+  console.log(rows);
+  res.send(rows);
+  })
+});
+//get comment
 app.post('/register', function(req, res, next){
   console.log(req.body)
   var user = req.body.user;

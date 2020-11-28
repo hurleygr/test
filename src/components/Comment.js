@@ -4,12 +4,15 @@ import React from 'react';
 class Comment extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {id: this.props.id, content: this.props.content, author: this.props.author, showEdit: false}
+        this.state = {id: this.props.comment_id, content: this.props.content, author: this.props.author, showEdit: false}
         this.update_comments = this.update_comments.bind(this);
+	this.toggle_edit = this.toggle_edit.bind(this);
+	this.delete_comment = this.delete_comment.bind(this);
+	
      }
 
      toggle_edit () {
-        this.setState({showEdit : !this.state.showEdit})
+        this.setState({showEdit : !(this.state.showEdit)})
     };
 
     content_change (e) {
@@ -24,9 +27,13 @@ class Comment extends React.Component {
             var today = new Date();
            
             arr.push(today);
-        this.props.editfunc(arr, this.props.id)
+        this.props.editFunc(arr, this.props.id)
         this.toggle_edit();
-    }
+    };
+
+    delete_comment() {
+	this.props.deleteFunc(this.state.id)
+    };
 
 render() {
     return (
@@ -37,10 +44,10 @@ render() {
             <h7>{"Posted On: " + this.props.create_date}</h7>
 
             <p>{this.props.content}</p>
-            <button >
+            <button onClick={this.toggle_edit}>
                 Edit
             </button>
-            <button>
+            <button onClick={this.delete_comment}>
                 Delete
             </button>
             {this.state.showEdit ?

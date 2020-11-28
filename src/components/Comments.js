@@ -28,6 +28,7 @@ class Comments extends React.Component {
     async createComment(arr) {
         const u = await this.id_from_user(this.props.username)
         const new_state = this.state;
+	const comment_id = null;
         fetch('http://flip2.engr.oregonstate.edu:1135/comments', {
             method: 'POST',
             headers: {
@@ -44,11 +45,11 @@ class Comments extends React.Component {
             })
           })
           .then(response => response.json())
-	      .then(data => console.log(data))
+	  .then(data => comment_id = data.insertId)
           .catch(err => console.log(err))
         
 
-         new_state.data.push({post_id:this.props.post_id, content: arr[0], author: u, create_date: new Date() })
+         new_state.data.push({comment_id: comment_id, post_id:this.props.post_id, content: arr[0], author: u, create_date: new Date() })
          this.setState(new_state)
     };
 
@@ -56,8 +57,24 @@ class Comments extends React.Component {
         return
     };
 
-    deleteComment(idx) {
-        return
+    deleteComment(id) {
+	fetch('http://flip2.engr.oregonstate.edu:1135/comments?id=' + id, {
+	    method: 'DELETE',
+	    headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+                  'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            }})
+	    .then(response => response.json())
+	    .catch(err => console.log(err))
+	var arr = this.state.data;
+        for (var i=0; i<arr.length; i++) {
+	    if (arr.comment_id == id) {
+		arr.splice(i,1);
+		this.setState({data: arr})
+	        break;
+        }}
         
     };
 
@@ -71,10 +88,10 @@ render() {
                 author={state.author} 
                 content={state.content} 
                 create_date = {state.create_date}
-                idx = {idx}
+                comment_id  = {state.comment_id}
 	        post_id = {state.post_id}
-                editfunc = {this.editPost}
-                deletefunc = {this.deletePost}
+                editFunc = {this.editComment}
+                deleteFunc = {this.deleteComment}
                 />
                 )
             }): null }
