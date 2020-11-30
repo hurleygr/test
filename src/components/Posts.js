@@ -71,8 +71,7 @@ class Posts extends React.Component {
       const post_id = arr[3] ;
       const group_id = await this.id_from_group(arr[2])
 
-
-
+      const group_name = group_id.length ? arr[2] : this.state.data[idx].group_name
 
         fetch('http://flip2.engr.oregonstate.edu:1135/posts', {
             method: 'PUT',
@@ -92,7 +91,7 @@ class Posts extends React.Component {
           .then(response => response.json())
           .catch(err => console.log(err))
 
-        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: arr[2], group_id: group_id}
+        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: group_name, group_id: group_id}
         this.setState(new_state)
     };
 

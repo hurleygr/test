@@ -68,9 +68,12 @@ app.post('/posts', function(req, res, next){
   });
 app.delete('/posts', function(req, res, next){
   var post_id = req.query.id;
-  mysql.pool.query('DELETE Posts, Comments FROM Posts INNER JOIN Comments ON Posts.post_id=Comments.post_id WHERE Posts.post_id=? AND Comments.post_id=?', [post_id, post_id], function(err, rows, fields){
-  console.log(err)
-  res.send(rows);
+  mysql.pool.query('DELETE FROM Posts WHERE Posts.post_id=?', [post_id], function(err, rows, fields) {
+    console.log(err)
+    res.send(rows)
+//  mysql.pool.query('DELETE Posts, Comments FROM Posts INNER JOIN Comments ON Posts.post_id=Comments.post_id WHERE Posts.post_id=? AND Comments.post_id=?', [post_id, post_id], function(err, rows, fields){
+  //console.log(err)
+  //res.send(rows);
   })
 });
 app.put('/posts', function(req, res, next) {
@@ -90,7 +93,7 @@ app.delete('/comments', function(req, res, next){
   var comment_id = req.query.id;
   mysql.pool.query('DELETE FROM Comments WHERE Comments.comment_id=?', [comment_id], function(err, rows, fields){
   console.log(err);
-  console.log(rows);
+  //console.log(rows);
   res.send(rows);
   })
 });
@@ -114,11 +117,12 @@ app.post('/comments', function(req, res, next){
   var create_date = new Date();
   var post_id = req.body.post_id; 
   var user_id = req.body.user_id; 
-  var post = {user_id:user_id, post_id:post_id, content:content, create_date:create_date}
+ console.log("user id ", user_id);
+ var post = {user_id:user_id, post_id:post_id, content:content, create_date:create_date}
   mysql.pool.query('INSERT INTO Comments SET ?', post, function(err, rows, fields){
         console.log(err)
-        console.log(fields)
-        console.log(rows)
+   //     console.log(fields)
+     //   console.log(rows)
 	res.send(rows)
 })
 });

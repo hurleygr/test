@@ -21,13 +21,15 @@ class Comments extends React.Component {
       };
 
     id_from_user(user){
-        return fetch('http://flip2.engr.oregonstate.edu:1135/userid?username=' + user )
-        .then((response) => response.json())
-        .catch((err) => console.log(err))
+	  return fetch('http://flip2.engr.oregonstate.edu:1135/userid?username=' + user )
+          .then((response) => response.json())
+          .catch((err) => console.log(err))
   };
     async createComment(arr) {
-        const u = await this.id_from_user(this.props.username)
-        const new_state = this.state;
+        const user = localStorage.getItem("user")
+	const u = await this.id_from_user(user)
+        console.log(u, "user ", user)
+	const new_state = this.state;
 	const comment_id = null;
         fetch('http://flip2.engr.oregonstate.edu:1135/comments', {
             method: 'POST',
@@ -49,7 +51,7 @@ class Comments extends React.Component {
           .catch(err => console.log(err))
         
 
-         new_state.data.push({comment_id: comment_id, post_id: this.props.post_id, content: arr[0], user_id: u, author: this.props.username, create_date: new Date() })
+         new_state.data.push({comment_id: comment_id, post_id: this.props.post_id, content: arr[0], user_id: u, user_name: user ? user  : "Anonymous", create_date: new Date() })
          this.setState(new_state)
     };
 
