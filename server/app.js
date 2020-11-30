@@ -34,6 +34,15 @@ app.get('/allcomments', function(req, res, next){
   })
 });
 
+app.get('/login', function(req, res, next){
+  var username = req.query.username;
+  var password = req.query.password;
+	mysql.poo..query('SELECT * FROM Users WHERE Users.user_name=? AND Users.password=?', [username, password], function(err, rows, fields){
+		console.log(err)
+		res.send(rows);
+	})
+});
+
 app.get('/comments', function(req, res, next){
   console.log(req);
   var post_id = req.query.id;
