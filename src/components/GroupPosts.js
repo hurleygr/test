@@ -1,8 +1,8 @@
 import React from 'react';
 import Post from './Post';
-import WritePost from './WritePost';
+import WriteGroupPost from './WriteGroupPost';
 
-class Posts extends React.Component {
+class GroupPosts extends React.Component {
     constructor(props) {
         super(props);
         //add SELECT
@@ -14,10 +14,14 @@ class Posts extends React.Component {
         this.getGroupAndUser = this.getGroupAndUser.bind(this);
         this.deletePost = this.deletePost.bind(this);
     }
-    componentDidMount() {
-        fetch('http://flip3.engr.oregonstate.edu:7272/posts')
-            .then(response => response.json())
-            .then(json => this.setState({ data: json }));
+    componentDidUpdate(prevProps) {
+        if (this.props.group_name !== prevProps.group_name) {
+            console.log(this.props)
+            console.log("Group name is: " + this.props.group_name)
+            fetch('http://flip3.engr.oregonstate.edu:7272/groupposts?group=' + this.props.group_name)
+                .then(response => response.json())
+                .then(json => this.setState({ data: json }));
+        }
     };
 
     id_from_user(user) {
@@ -39,9 +43,6 @@ class Posts extends React.Component {
         const new_state = this.state;
         const post_id = null;
         const [user_id, group_id] = await this.getGroupAndUser(arr[2], arr[3])
-
-
-
 
         fetch('http://flip3.engr.oregonstate.edu:7272/posts', {
             method: 'POST',
@@ -121,10 +122,9 @@ class Posts extends React.Component {
     };
 
     render() {
-        console.log(this.state);
         return (
             <div style={{ margin: "40px" }}>
-                <WritePost update={this.createPost} username={this.props.username} />
+                <WriteGroupPost update={this.createPost} username={this.props.username} group={this.props.group_name} />
                 {this.state.data.length ? this.state.data.map((state, idx) => {
                     return (<Post
                         title={state.title}
@@ -137,6 +137,7 @@ class Posts extends React.Component {
                         post_id={state.post_id}
                         editfunc={this.editPost}
                         deletefunc={this.deletePost}
+                        key={state.title}
                     />
                     )
                 }) : null}
@@ -144,4 +145,4 @@ class Posts extends React.Component {
         );
     }
 }
-export default Posts;
+export default GroupPosts;

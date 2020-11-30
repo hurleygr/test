@@ -7,50 +7,50 @@ class Comments extends React.Component {
     constructor(props) {
         super(props);
         //add SELECT
-        this.state = {data: []};
+        this.state = { data: [] };
         this.createComment = this.createComment.bind(this);
         this.editComment = this.editComment.bind(this);
-        this.deleteComment= this.deleteComment.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
         this.id_from_user = this.id_from_user.bind(this);
 
     }
     componentDidMount() {
-        fetch('http://flip2.engr.oregonstate.edu:1135/comments?id=' + this.props.post_id)
-        .then(response => response.json())
-        .then(json => this.setState({data: json}));
-      };
+        fetch('http://flip3.engr.oregonstate.edu:7272/comments?id=' + this.props.post_id)
+            .then(response => response.json())
+            .then(json => this.setState({ data: json }));
+    };
 
-    id_from_user(user){
-        return fetch('http://flip2.engr.oregonstate.edu:1135/userid?username=' + user )
-        .then((response) => response.json())
-        .catch((err) => console.log(err))
-  };
+    id_from_user(user) {
+        return fetch('http://flip3.engr.oregonstate.edu:7272/userid?username=' + user)
+            .then((response) => response.json())
+            .catch((err) => console.log(err))
+    };
     async createComment(arr) {
         const u = await this.id_from_user(this.props.username)
         const new_state = this.state;
-	const comment_id = null;
-        fetch('http://flip2.engr.oregonstate.edu:1135/comments', {
+        const comment_id = null;
+        fetch('http://flip3.engr.oregonstate.edu:7272/comments', {
             method: 'POST',
             headers: {
-              'Accept': 'application/json',
-              'Access-Control-Allow-Credentials' : true,
-	          'Access-Control-Allow-Origin' : '*',
-              'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              create_date: new Date(),
-              content: arr[0],
-              user_id: u.length ? u[0].user_id : 4, //arr[2],
-              post_id: this.props.post_id //arr[3]
+                create_date: new Date(),
+                content: arr[0],
+                user_id: u.length ? u[0].user_id : 4, //arr[2],
+                post_id: this.props.post_id //arr[3]
             })
-          })
-          .then(response => response.json())
-	  .then(data => comment_id = data.insertId)
-          .catch(err => console.log(err))
-        
+        })
+            .then(response => response.json())
+            .then(data => comment_id = data.insertId)
+            .catch(err => console.log(err))
 
-         new_state.data.push({comment_id: comment_id, post_id: this.props.post_id, content: arr[0], user_id: u, author: this.props.username, create_date: new Date() })
-         this.setState(new_state)
+
+        new_state.data.push({ comment_id: comment_id, post_id: this.props.post_id, content: arr[0], user_id: u, author: this.props.username, create_date: new Date() })
+        this.setState(new_state)
     };
 
     editComment(arr, idx) {
@@ -58,47 +58,50 @@ class Comments extends React.Component {
     };
 
     deleteComment(id) {
-	fetch('http://flip2.engr.oregonstate.edu:1135/comments?id=' + id, {
-	    method: 'DELETE',
-	    headers: {
-              'Accept': 'application/json',
-              'Access-Control-Allow-Credentials' : true,
-                  'Access-Control-Allow-Origin' : '*',
-              'Content-Type': 'application/json'
-            }})
-	    .then(response => response.json())
-	    .catch(err => console.log(err))
-	var arr = this.state.data;
+        fetch('http://flip3.engr.oregonstate.edu:7272/comments?id=' + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .catch(err => console.log(err))
+        var arr = this.state.data;
         console.log(arr)
-        for (var i=0; i<arr.length; i++) {
-	    if (arr[i].comment_id == id) {
-		arr.splice(i,1);
-		console.log(arr)
-		this.setState({data: arr})
-	        break;
-        }}
-        
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].comment_id == id) {
+                arr.splice(i, 1);
+                console.log(arr)
+                this.setState({ data: arr })
+                break;
+            }
+        }
+
     };
 
-render() {
-    console.log(this.state.data)
-    return (
-        <div style = {{margin:"40px"}}>
-            <WriteComment update = {this.createComment} username = {this.props.username}/>
+    render() {
+        console.log(this.state.data)
+        return (
+            <div style={{ margin: "40px" }}>
+                <WriteComment update={this.createComment} username={this.props.username} />
 
-            {this.state.data.length ? this.state.data.map((state, idx) => {
-                return (<Comment
-                author={state.user_name} 
-                content={state.content} 
-                create_date = {state.create_date}
-                comment_id  = {state.comment_id}
-	        post_id = {state.post_id}
-                editFunc = {this.editComment}
-                deleteFunc = {this.deleteComment}
-                />
-                )
-            }): null }
-        </div> 
-    );
-}}
+                {this.state.data.length ? this.state.data.map((state, idx) => {
+                    return (<Comment
+                        author={state.user_name}
+                        content={state.content}
+                        create_date={state.create_date}
+                        comment_id={state.comment_id}
+                        post_id={state.post_id}
+                        editFunc={this.editComment}
+                        deleteFunc={this.deleteComment}
+                    />
+                    )
+                }) : null}
+            </div>
+        );
+    }
+}
 export default Comments;
