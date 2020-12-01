@@ -4,7 +4,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {showLogin: false, showLogOut: false, showRegister: false, login: {username: null, password: null}, registration: {email: null, username: null, password: null}};
-
+	this.isValidUser = this.isValidUser.bind(this);
     }
    
     username_change (e) {
@@ -34,7 +34,7 @@ class Login extends React.Component {
     };
     
     show_logIn() {
-	 this.setState({showLogIn: !(this.state.showLogIn)})
+	 this.setState({showLogin: !(this.state.showLogin)})
     };
 	
     close_register() {
@@ -71,22 +71,27 @@ class Login extends React.Component {
         this.close_register();
     };
     isValidUser(username, password) {
-	  fetch('http://flip2.engr.oregonstate.edu:1135/login?username=' + username + 'password=' + password , {
+	  return fetch('http://flip2.engr.oregonstate.edu:1135/login?username=' + username + '&password=' + password)
             
-          .then(response => response.json)
+          .then((response) => response.json())
+	 // .then((data) => console.log(data))
 	  .catch(err => console.log(err))
-	      
-    logInFunction (e) {
+	    
+}; 
+     async logInFunction (e) {
         e.preventDefault();
-	const u = await isValidUser(this.state.login.username, this.state.login.password)
-	if (u.length) {
+	console.log(this.state.login.username, this.state.login.password, "username and password")
+	var u = await this.isValidUser(this.state.login.username, this.state.login.password)
+	console.log("u", u)
+	if (u) {
 		localStorage.setItem("user", this.state.login.username)
-        	this.props.func(this.state.login.username);
-  	else{
-		  alert("Invalid username or password")
-	this.setState({showLogOut: true})
-    }
-
+        	this.props.func(this.state.login.username)
+  	} else {
+		  alert("Invalid username or password")}
+	this.setState({showLogin: !(this.state.showLogin)})	
+//this.setState({showLogin: false})
+    
+    };
     
     
     
