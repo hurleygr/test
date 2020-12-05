@@ -8,7 +8,7 @@ class SpecificPost extends React.Component {
   };
   render() {
     return (
-	< Header > 
+	< Header/ > 
         <div style = {{border: '2px solid', margin: '8px', marginRight: '30%'}}>
 
             <h1>{this.props.location.state.title}</h1>
