@@ -64,7 +64,7 @@ class Login extends React.Component {
           .then(response => console.log(response))
 	      
           .catch(err => console.log(err))
-        this.props.func(this.state.registration.username)
+        //this.props.func(this.state.registration.username)
 
 	this.setState({registration: clear_registration})
        
