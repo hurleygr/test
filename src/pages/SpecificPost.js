@@ -19,7 +19,7 @@ class SpecificPost extends React.Component {
             : null}
             <p>{this.props.location.state.content}</p>
             <p>{this.props.location.state.create_date}</p>
-            <Buttons title={this.props.location.state.title} content={this.props.location.state.content} group={this.props.location.state.group} id={this.props.location.state.id} />
+            <Buttons title={this.props.location.state.title} content={this.props.location.state.content} group={this.props.location.state.group} id={this.props.location.state.id} editfunc={this.props.location.state.editfunc} deletefunc={this.props.location.state.deletefunc} idx={this.props.location.state.idx}/>
             <Comments post_id={this.props.location.state.post_id} />
         </div> 
     );
