@@ -38,7 +38,9 @@ class Posts extends React.Component {
     async createPost(arr) {
         const new_state = this.state;
         const post_id = null;
-	const [user_id, group_id] = await this.getGroupAndUser(arr[2], arr[3])
+	const user = localStorage.getItem("user")
+	
+	const [user_id, group_id] = await this.getGroupAndUser(user, arr[3])
         
 	
 
