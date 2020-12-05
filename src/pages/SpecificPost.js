@@ -8,9 +8,9 @@ class SpecificPost extends React.Component {
   };
   render() {
     return (
-	< Header/ > 
+	
         <div style = {{border: '2px solid', margin: '8px', marginRight: '30%'}}>
-
+	< Header/ > 
             <h1>{this.props.location.state.title}</h1>
 
             <h5>{"Posted By: " + this.props.location.state.author}</h5>
