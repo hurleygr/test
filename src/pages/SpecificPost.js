@@ -1,14 +1,14 @@
 import React from 'react';
 import Buttons from '../components/Buttons';
 import Comments from '../components/Comments';
-
+import Header from '../components/Header';
 class SpecificPost extends React.Component {
   constructor(props) {
     super(props);
   };
   render() {
     return (
-	
+	< Header > 
         <div style = {{border: '2px solid', margin: '8px', marginRight: '30%'}}>
 
             <h1>{this.props.location.state.title}</h1>
