@@ -4,7 +4,7 @@ import React from 'react';
 class Comment extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {id: this.props.comment_id, content: this.props.content, author: this.props.author, showEdit: false}
+        this.state = {id: this.props.comment_id, content: this.props.content, author: this.props.author, comment_id: this.props.comment_id, showEdit: false}
         this.update_comments = this.update_comments.bind(this);
 	this.toggle_edit = this.toggle_edit.bind(this);
 	this.delete_comment = this.delete_comment.bind(this);
@@ -24,6 +24,7 @@ class Comment extends React.Component {
     
             const arr = [];
             arr.push(this.state.content);
+	    arr.push(this.state.comment_id);
             var today = new Date();
            
             arr.push(today);
