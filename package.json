@@ -14,6 +14,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
+    "react-select": "^3.1.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -40,5 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://flip2.eng.oregonstate.edu:1135"
+  "proxy": "http://flip3.eng.oregonstate.edu:7272"
 }
