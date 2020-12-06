@@ -64,7 +64,7 @@ class Posts extends React.Component {
 	      .then(data => post_id = data.insertId)
           .catch(err => console.log(err))
         
-         new_state.data.push({create_date: create_date, post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
+         new_state.data.push({create_date: create_date, post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: user ? user: "Anonymous", user_id: user_id})
         this.setState(new_state)
     };
 
