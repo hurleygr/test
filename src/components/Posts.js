@@ -38,8 +38,8 @@ class Posts extends React.Component {
     async createPost(arr) {
         const new_state = this.state;
         const post_id = null;
-	const user = localStorage.getItem("user")
-	
+	const user = localStorage.getItem("user");
+	const create_date = new Date();
 	const [user_id, group_id] = await this.getGroupAndUser(user, arr[3])
         
 	
@@ -64,7 +64,7 @@ class Posts extends React.Component {
 	      .then(data => post_id = data.insertId)
           .catch(err => console.log(err))
         
-         new_state.data.push({post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
+         new_state.data.push({create_date: create_date, post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: arr[2], user_id: user_id})
         this.setState(new_state)
     };
 
