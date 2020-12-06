@@ -74,7 +74,7 @@ class Comments extends React.Component {
           .then(response => response.json())
           .catch(err => console.log(err))
 
-        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: group_name, group_id: group_id}
+        new_state.data[idx]={...new_state.data[idx], content: arr[0]}
 	this.setState(new_state)
     };
 
