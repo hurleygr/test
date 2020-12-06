@@ -12,7 +12,7 @@ class Post extends React.Component {
 render() {
     return (
         <div style = {{border: '2px solid', margin: '8px', marginRight: '30%'}}>
-            <Link style = {{color: "black", textDecoration: "none"}} to={{pathname:'/specificpost', state: {create_date: this.props.create_date, editfunc: this.props.editfunc, deletefunc: this.props.deletefunc, author: this.props.author, title:this.props.title, content:this.props.content, group_name:this.props.group_name, post_id:this.props.post_id, idx: this.props.idx}}} >
+            <Link style = {{color: "black", textDecoration: "none"}} to={{pathname:'/specificpost', state: {create_date: this.props.create_date, author: this.props.author, title:this.props.title, content:this.props.content, group_name:this.props.group_name, post_id:this.props.post_id, idx: this.props.idx}}} >
 
             <h1>{this.props.title}</h1>
 
