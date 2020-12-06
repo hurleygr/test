@@ -56,7 +56,26 @@ class Comments extends React.Component {
     };
 
     editComment(arr, idx) {
-        return
+	    const new_state = this.state
+	    fetch('http://flip2.engr.oregonstate.edu:1135/comments', {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+              'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              
+              content: arr[0]
+              comment_id: arr[1]
+	    })
+          })
+          .then(response => response.json())
+          .catch(err => console.log(err))
+
+        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: group_name, group_id: group_id}
+	this.setState(new_state)
     };
 
     deleteComment(id) {
