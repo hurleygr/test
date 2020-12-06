@@ -28,7 +28,7 @@ class Comment extends React.Component {
             var today = new Date();
            
             arr.push(today);
-        this.props.editFunc(arr, this.props.id)
+        this.props.editFunc(arr, this.props.idx)
         this.toggle_edit();
     };
 
