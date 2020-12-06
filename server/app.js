@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 app.get('/posts', function (req, res, next) {
   //console.log("Posts")
+<<<<<<< HEAD
   mysql.pool.query('SELECT * FROM Posts LEFT JOIN Groups ON Posts.group_id=Groups.group_id LEFT JOIN Users ON Users.user_id=Posts.user_id ORDER BY create_date DESC', function (err, rows, fields) {
     //  		console.log(rows)
     res.send(rows);
@@ -126,10 +127,111 @@ app.delete('/comments', function (req, res, next) {
 });
 //get comment
 app.post('/register', function (req, res, next) {
+=======
+	mysql.pool.query('SELECT * FROM Posts LEFT JOIN Groups ON Posts.group_id=Groups.group_id LEFT JOIN Users ON Users.user_id=Posts.user_id', function(err, rows, fields){
+  //  		console.log(rows)
+		res.send(rows);
+		});
+	});
+app.get('/allcomments', function(req, res, next){
+  mysql.pool.query('SELECT * FROM Comments', function(err, rows, fields){
+  res.send(rows);
+  })
+});
+
+app.get('/login', function(req, res, next){
+  var username = req.query.username;
+  var password = req.query.password;
+  console.log(username, password)
+	mysql.pool.query('SELECT * FROM Users WHERE Users.user_name=? AND Users.password=?', [username, password], function(err, rows, fields){
+		console.log(rows)
+		console.log(err)
+		res.send(rows);
+	})
+});
+
+app.get('/comments', function(req, res, next){
+  console.log(req);
+  var post_id = req.query.id;
+  mysql.pool.query("SELECT * FROM Comments LEFT JOIN Users ON Comments.user_id=Users.user_id  WHERE Comments.post_id=?",[post_id], function(err, rows, fields){
+  console.log(err)  
+  res.send(rows);
+    })
+});
+app.post('/posts', function(req, res, next){
+    //var title = req.body.title;
+    console.log("req: ", req.body);
+    //var content = req.body.content;
+   // var create_date = req.body.create_date;
+    //var group_id = req.body.group_id; // need select, what if no group? what if group not created but field is filled?
+    //var user_id = req.body.user_id; // what if no one logged in? default to anonymous? but then there is no id. 
+    //mysql.pool.query("INSERT INTO Posts (`title`, `content`, `create_date`, `group_id`, `user_id`) VALUES ('" + title + "', '" + content + "', NOW(), '" + group_id +"',  '" + user_id +"'", function(err, rows, fields) {
+//console.log('fields: ', fields)
+//console.log('err: ', err)
+//console.log(rows)
+    var create_date = new Date()
+    var title = req.body.title;
+    var content = req.body.content;
+    var group_id = req.body.group_id; 
+    var user_id = req.body.user_id; 
+    var post = {title: title, content: content, create_date: create_date, group_id: group_id, user_id:user_id}
+    mysql.pool.query('INSERT INTO Posts SET ?', post, function(err, rows, fields) {
+      console.log(err)
+      console.log(fields)
+      console.log(rows)
+      res.send(rows)
+})
+  });
+app.delete('/posts', function(req, res, next){
+  var post_id = req.query.id;
+  mysql.pool.query('DELETE FROM Posts WHERE Posts.post_id=?', [post_id], function(err, rows, fields) {
+    console.log(err)
+    res.send(rows)
+//  mysql.pool.query('DELETE Posts, Comments FROM Posts INNER JOIN Comments ON Posts.post_id=Comments.post_id WHERE Posts.post_id=? AND Comments.post_id=?', [post_id, post_id], function(err, rows, fields){
+  //console.log(err)
+  //res.send(rows);
+  })
+});
+app.put('/posts', function(req, res, next) {
+   // var create_date = new Date()
+    var title = req.body.title;
+    var content = req.body.content;
+    var group_id = req.body.group_id;
+    //var user_id = req.body.user_id;
+    var post = {title: title, content: content, group_id: group_id}
+  mysql.pool.query('UPDATE Posts SET ? WHERE Posts.post_id = ?',[post, req.body.post_id], function(err, rows, fields) {
+  console.log(err)
+  res.send(rows)
+})});
+
+app.put('/comments', function(req, res, next) {
+   // var create_date = new Date()
+    
+    var content = req.body.content;
+    
+    var comment_id = req.body.comment_id;
+    var comment = {content: content, comment_id: comment_id}
+  mysql.pool.query('UPDATE Comments SET ? WHERE Comments.comment_id = ?',[comment, comment_id], function(err, rows, fields) {
+  console.log(err)
+  res.send(rows)
+})});
+//delete comment with specific id
+app.delete('/comments', function(req, res, next){
+  var comment_id = req.query.id;
+  mysql.pool.query('DELETE FROM Comments WHERE Comments.comment_id=?', [comment_id], function(err, rows, fields){
+  console.log(err);
+  //console.log(rows);
+  res.send(rows);
+  })
+});
+//get comment
+app.post('/register', function(req, res, next){
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
   console.log(req.body)
   var user = req.body.user;
   var password = req.body.password;
   var email = req.body.email;
+<<<<<<< HEAD
   var post = { user_name: user, password: password, email: email }
   mysql.pool.query('INSERT INTO Users SET ?', post, function (err, rows, fields) {
     console.log(err)
@@ -137,11 +239,21 @@ app.post('/register', function (req, res, next) {
     console.log(rows)
     res.send(rows)
   })
+=======
+  var post = {user_name: user, password: password, email: email}
+  mysql.pool.query('INSERT INTO Users SET ?',post, function(err, rows, fields){
+console.log(err)
+console.log(fields)
+console.log(rows)
+res.send(rows)
+})
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
 });
 
 app.post('/comments', function (req, res, next) {
   var content = req.body.content;
   var create_date = new Date();
+<<<<<<< HEAD
   var post_id = req.body.post_id;
   var user_id = req.body.user_id;
   console.log("user id ", user_id);
@@ -155,6 +267,21 @@ app.post('/comments', function (req, res, next) {
 });
 
 app.get('/author', function (req, res, next) {
+=======
+  var post_id = req.body.post_id; 
+  var user_id = req.body.user_id; 
+ console.log("user id ", user_id);
+ var post = {user_id:user_id, post_id:post_id, content:content, create_date:create_date}
+  mysql.pool.query('INSERT INTO Comments SET ?', post, function(err, rows, fields){
+        console.log(err)
+   //     console.log(fields)
+     //   console.log(rows)
+	res.send(rows)
+})
+});
+
+app.get('/author', function(req, res, next) {
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
   var id = req.query.id;
   mysql.pool.query("SELECT username FROM Users WHERE user_id = ?", [id], function (err, rows, fields) {
     res.send(rows)

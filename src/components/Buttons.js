@@ -48,6 +48,7 @@ class Buttons extends React.Component {
                 <button onClick={this.deletePost.bind(this)}>
                     Delete
               </button>
+<<<<<<< HEAD
                 {this.state.showEdit ?
                     <form onSubmit={this.update_posts}>
                         <label style={{ marginLeft: "10px" }}>
@@ -62,6 +63,22 @@ class Buttons extends React.Component {
                         <input type="submit" value="Submit" />
                     </form>
                     : null}
+=======
+            {this.state.showEdit ?
+            <form onSubmit={this.update_posts}>
+                <label style = {{marginLeft: "10px"}}>
+                    <input type="text" placeholder="Enter Title" defaultValue = {this.props.title} style = {{width: "400px"}} onChange = {this.title_change.bind(this)}/>
+                </label>
+                <label style = {{marginLeft: "10px"}}>
+                    <input type="text" placeholder="Enter Post Body" defaultValue = {this.props.content} style = {{width: "400px"}} onChange ={this.content_change.bind(this)}/>
+                </label>
+                <label style = {{marginLeft: "10px"}}>
+                    <input type="text" placeholder="Optional: Enter a Group" defaultValue={this.props.group_name} style = {{width: "400px"}} onChange ={this.group_change.bind(this)}/>
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+            : null }
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
             </div>
         );
     }

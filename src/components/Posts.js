@@ -38,9 +38,17 @@ class Posts extends React.Component {
     async createPost(arr) {
         const new_state = this.state;
         const post_id = null;
+<<<<<<< HEAD
         const user = localStorage.getItem("user")
         const create_date = new Date();
         const [user_id, group_id] = await this.getGroupAndUser(user, arr[3])
+=======
+	const user = localStorage.getItem("user");
+	const create_date = new Date();
+	const [user_id, group_id] = await this.getGroupAndUser(user, arr[3])
+        
+	
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
 
 
         fetch('http://flip3.engr.oregonstate.edu:7272/posts', {
@@ -57,16 +65,26 @@ class Posts extends React.Component {
                 user_id: user_id.length ? user_id[0].user_id : 4, //arr[2],
                 group_id: group_id.length ? group_id[0].group_id : null //arr[3]
             })
+<<<<<<< HEAD
         })
             .then(response => response.json())
             .then(data => post_id = data.insertId)
             .catch(err => console.log(err))
 
         new_state.data.unshift({ create_date: create_date, post_id: post_id, content: arr[1], title: arr[0], group_id: group_id, group_name: arr[3], user_name: user ? user : "Anonymous", user_id: user_id })
+=======
+          })
+          .then(response => response.json())
+	      .then(data => post_id = data.insertId)
+          .catch(err => console.log(err))
+        
+         new_state.data.unshift({create_date: create_date, post_id:post_id, content: arr[1] , title: arr[0], group_id: group_id, group_name: arr[3], user_name: user ? user: "Anonymous", user_id: user_id})
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
         this.setState(new_state)
     };
 
     async editPost(arr, idx) {
+<<<<<<< HEAD
         const new_state = this.state;
         const post_id = arr[3];
         const group_id = await this.id_from_group(arr[2])
@@ -92,10 +110,38 @@ class Posts extends React.Component {
             .catch(err => console.log(err))
 
         new_state.data[idx] = { ...new_state.data[idx], content: arr[1], title: arr[0], group_name: group_name, group_id: group_id }
+=======
+      const new_state = this.state;
+      const post_id = arr[3] ;
+      const group_id = await this.id_from_group(arr[2])
+
+      const group_name = group_id.length ? arr[2] : this.state.data[idx].group_name
+
+        fetch('http://flip2.engr.oregonstate.edu:1135/posts', {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+              'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: arr[0],
+              content: arr[1],
+              group_id: group_id.length ? group_id[0].group_id : null, //arr[3]
+              post_id: post_id
+	    })
+          })
+          .then(response => response.json())
+          .catch(err => console.log(err))
+
+        new_state.data[idx]={...new_state.data[idx], content: arr[1] , title: arr[0], group_name: group_name, group_id: group_id}
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
         this.setState(new_state)
     };
 
     deletePost(id) {
+<<<<<<< HEAD
         fetch('http://flip3.engr.oregonstate.edu:7272/posts?id=' + id, {
             method: 'DELETE',
             headers: {
@@ -144,3 +190,50 @@ class Posts extends React.Component {
     }
 }
 export default Posts;
+=======
+	fetch('http://flip2.engr.oregonstate.edu:1135/posts?id=' + id, {
+	    method: 'DELETE',
+	    headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Credentials' : true,
+                  'Access-Control-Allow-Origin' : '*',
+              'Content-Type': 'application/json'
+            }})
+	    .then(response => response.json())
+	    .catch(err => console.log(err))
+	var arr = this.state.data;
+	console.log(id, arr)
+        for (var i=0; i<arr.length; i++) {
+	    if (arr[i].post_id == id) {
+		arr.splice(i,1);
+		this.setState({data: arr})
+	        break;
+        }}
+        
+    };
+
+render() {
+	console.log(this.state);
+    return (
+        <div style = {{margin:"40px"}}>
+            <WritePost update = {this.createPost} username = {this.props.username}/>
+	    {this.state.data.length ? this.state.data.map((state, idx) => {
+                return (<Post
+                title = {state.title}
+                author={state.user_name} 
+                content={state.content} 
+                create_date = {state.create_date}
+                group_id = {state.group_id}
+		group_name = {state.group_name}
+                idx = {idx}
+	        post_id = {state.post_id}
+                editfunc = {this.editPost}
+                deletefunc = {this.deletePost}
+                />
+                )
+            }): null }
+        </div> 
+);
+} }
+export default Posts;
+>>>>>>> 1d2d786608391f2097638fcf140c1acf024f1e69
