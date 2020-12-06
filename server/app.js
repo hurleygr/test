@@ -99,6 +99,17 @@ app.put('/posts', function(req, res, next) {
   res.send(rows)
 })});
 
+app.put('/comments', function(req, res, next) {
+   // var create_date = new Date()
+    
+    var content = req.body.content;
+    
+    var comment_id = req.body.comment_id;
+    var comment = {content: content, comment_id: comment_id}
+  mysql.pool.query('UPDATE Comments SET ? WHERE Comments.comment_id = ?',[comment, comment_id], function(err, rows, fields) {
+  console.log(err)
+  res.send(rows)
+})});
 //delete comment with specific id
 app.delete('/comments', function(req, res, next){
   var comment_id = req.query.id;
