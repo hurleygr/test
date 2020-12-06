@@ -93,6 +93,7 @@ render() {
                 author={state.user_name} 
                 content={state.content} 
                 create_date = {state.create_date}
+		idx = {idx}
                 comment_id  = {state.comment_id}
 	        post_id = {state.post_id}
                 editFunc = {this.editComment}
