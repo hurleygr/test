@@ -131,7 +131,7 @@ render() {
 	
 	{this.state.showLogin ?
         <form onSubmit = {this.logInFunction.bind(this)}>
-            <h2>Join:</h2>
+            <h2>Log In:</h2>
             
             <label>
                 Username:
